@@ -15,7 +15,7 @@ function verifyToken(req, res, next) {
   }
 
   // Verify the token
-  jsonwebtoken.verify(token, "saikey", (err, decoded) => {
+  jsonwebtoken.verify(token, process.env.JWTOKEN, (err, decoded) => {
     if (err) {
       return res
         .status(401)

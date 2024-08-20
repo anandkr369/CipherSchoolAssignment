@@ -4,14 +4,14 @@ const mongoose = require("mongoose");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const verifyToken = require("./verifyToken");
-
+require('dotenv').config();
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 // MongoDB connection
 mongoose
-  .connect("mongodb+srv://anandkr369:Kumaranand369@cluster0.xgzq1qs.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+  .connect(process.env.MONGODB_URL)
   .then(() => {
     console.log("Database connected successfully...");
   })
