@@ -4,173 +4,150 @@ import Webcam from 'react-webcam';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import emailjs from '@emailjs/browser';
+import './TestArea.css';
 
 const TestArea = () => {
     const [mcqs, setMcqs] = useState([]);
     const [selectedAnswers, setSelectedAnswers] = useState({});
-    const [date,setDate]=useState("");
+    const [date, setDate] = useState("");
+    const [score, setScore] = useState(0);
 
-    const[score,setscore]=useState(0);
-    
-
-    const state=useSelector((state)=>{return state})
-    
-    
-    const navigate=useNavigate();
+    const state = useSelector((state) => state);
+    const navigate = useNavigate();
     const form = useRef();
 
     useEffect(() => {
-        console.log(state);
         fetch('http://localhost:3000/mcqs', {
             method: "GET",
             headers: {
-                "Authorization":state.token,
+                "Authorization": state.token,
                 "Content-Type": "application/json"
             }
         })
         .then((res) => res.json())
         .then((data) => {
             if (data && data.mcqs) {
-                setMcqs(data.mcqs);  // Ensure data.mcqs exists before setting state
+                setMcqs(data.mcqs);
             } else {
                 alert("No questions found.");
             }
         })
-        .catch((err) => {
+        .catch(() => {
             alert("Something went wrong. Please try again.");
         });
-    }, []);
+    }, [state.token]);
 
     const handleOptionChange = (questionIndex, option) => {
         setSelectedAnswers({
             ...selectedAnswers,
             [questionIndex]: option
         });
-        console.log(selectedAnswers);
     };
 
-    
+    const handleSubmit = () => {
+        if (window.confirm("Do you want to Submit the Test?")) {
+            let testScore = 0;
+            mcqs.forEach((mcq, index) => {
+                if (selectedAnswers[index] === mcq.correctAnswer) {
+                    testScore += 1;
+                }
+            });
 
-    function handleSubmit(){
-        alert("Do you want to Submit the Test");
-        let testscore = 0;
-        mcqs.forEach((mcq, index) => {
-            if (selectedAnswers[index] === mcq.correctAnswer) {
-                testscore += 1;
-            }
-        });
-        
+            const today = new Date();
+            const todayDate = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`;
+            setDate(todayDate);
+            setScore(testScore);
 
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = today.getMonth() + 1; 
-        const day = today.getDate();
-        let todayDate=`${day}-${month}-${year}`;
-        setDate(todayDate);
-        form.current.elements.name.value = state.name;
-        form.current.elements.score.value = testscore;  
-        form.current.elements.date.value = todayDate;
-        form.current.elements.email.value = state.email;
+            form.current.elements.name.value = state.name;
+            form.current.elements.score.value = testScore;
+            form.current.elements.date.value = todayDate;
+            form.current.elements.email.value = state.email;
 
-        let data={
-            email:state.email,
-            name:state.name,
-            score:testscore,
-            date:todayDate
+            const data = {
+                email: state.email,
+                name: state.name,
+                score: testScore,
+                date: todayDate
+            };
+
+            emailjs.sendForm('service_am5v4um', 'template_77bnwgj', form.current, 'NPPkHdO55CWfC_R2-')
+            .then(() => {
+                console.log('Email sent successfully');
+            })
+            .catch((error) => {
+                console.error('Email failed to send', error);
+            });
+
+            fetch("http://localhost:3000/save-score", {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then((res) => res.json())
+            .then(() => {
+                navigate('/complete');
+            })
+            .catch(() => {
+                alert("Something went wrong");
+            });
         }
-        emailjs
-      .sendForm('service_am5v4um', 'template_77bnwgj', form.current, {
-        publicKey: 'NPPkHdO55CWfC_R2-',
-      })
-      .then(
-        () => {
-          console.log('SUCCESS!');
-        },
-        (error) => {
-          console.log('FAILED...', error.text);
-        },
-      );
-
-        fetch("http://localhost:3000/save-score",{
-            method:"POST",
-            body:JSON.stringify(data),
-            headers:{
-                "Content-Type":"application/json"
-            }
-        })
-        .then((res)=>res.json())
-        .then((data)=>{
-            console.log(data.message);
-            navigate('/complete')
-        })
-        .catch((err)=>{
-            alert("something went wrong")
-        })
-       
-    }
+    };
 
     const resetOptionForQuestion = (questionIndex) => {
-       
         const newSelectedAnswers = { ...selectedAnswers };
         delete newSelectedAnswers[questionIndex];
         setSelectedAnswers(newSelectedAnswers);
 
-        // Uncheck the radio buttons for the specific question
         document.getElementsByName(`question${questionIndex}`).forEach(radio => {
             radio.checked = false;
         });
     };
 
     return (
-        <div>
-            <Navbar type={"Test Interface"}/>
+        <div className="test-area">
+            <Navbar type={"Test Interface"} />
             
-            <div className='mt-4'>
-            {mcqs.map((mcq, index) => (
-                <div key={index} className='container card border border-secondary p-3 w-75 mb-3'>
-                    <h4>{index+1}) {mcq.question}</h4>
-                    <ul style={{ listStyleType: "none", padding: 0 }} >
-                        {mcq.options.map((option, i) => (
-                            <li key={i} className='border border-secondary w-50 p-2 rounded mt-1 '>
-                                <input
-                                    type="radio"
-                                    name={`question${index}`}
-                                    value={option}
-                                    id={`q${index}_option${i}`}
-                                    onChange={() => handleOptionChange(index, option)}
-                                    
-                                />
-                                <label htmlFor={`q${index}_option${i}`} style={{ marginLeft: '8px',cursor:'pointer' }} >
-                                    {option}
-                                </label>
-                            </li>
-                        ))}
-                    </ul>
-                    <b
-                        onClick={() => resetOptionForQuestion(index)} 
-                        className="text-black m-0 p-0" 
-                        style={{cursor:"pointer"}}                   >
-                        Reset 
-                    </b>
-                </div>
-            ))}
-            </div>
-            <div className='d-flex justify-content-center'>
-            <button onClick={handleSubmit} className="btn btn-primary w-75 mb-3">Submit</button>
-            </div>
-            <div>
-                <Webcam width={"140px"} className='webcam'/>
+            <div className='questions-container'>
+                {mcqs.map((mcq, index) => (
+                    <div key={index} className='question-card'>
+                        <h4>{index + 1}. {mcq.question}</h4>
+                        <ul className="options-list">
+                            {mcq.options.map((option, i) => (
+                                <li key={i} className='option-item'>
+                                    <input
+                                        type="radio"
+                                        name={`question${index}`}
+                                        value={option}
+                                        id={`q${index}_option${i}`}
+                                        onChange={() => handleOptionChange(index, option)}
+                                    />
+                                    <label htmlFor={`q${index}_option${i}`} className='option-label'>
+                                        {option}
+                                    </label>
+                                </li>
+                            ))}
+                        </ul>
+                        <button onClick={() => resetOptionForQuestion(index)} className="reset-button">Reset</button>
+                    </div>
+                ))}
             </div>
 
-            <div className='form' >
-                <form action="" ref={form}>
-                <input type="text" name='name' value={state.name} readOnly/>
-                <input type="text" name='score' value={score} readOnly/>
-                <input type ='text' name="date" value={date} readOnly/>
-                <input type='text' name='email' value={state.email} readOnly/>
-                </form>
+            <div className='submit-container'>
+                <button onClick={handleSubmit} className="submit-button">Submit</button>
             </div>
-            
+
+            <div className='webcam-container'>
+                <Webcam className='webcam' />
+            </div>
+
+            <form ref={form} className='hidden-form'>
+                <input type="text" name='name' readOnly />
+                <input type="text" name='score' readOnly />
+                <input type='text' name="date" readOnly />
+                <input type='text' name='email' readOnly />
+            </form>
         </div>
     );
 };

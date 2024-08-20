@@ -1,0 +1,86 @@
+.webpermission {
+    font-family: 'Arial', sans-serif;
+    padding: 20px;
+    background-color: #f4f7f6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.notice-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-bottom: 20px;
+    width: 70%;
+}
+
+.notice-card {
+    text-align: left;
+}
+
+.notice-card h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.notice-card p,
+.notice-card ol {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.webcam-preview {
+    margin-top: 20px;
+}
+
+.webcam {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.access-buttons {
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-success {
+    background-color: #4CAF50;
+    color: #ffffff;
+}
+
+.btn-danger {
+    background-color: #f44336;
+    color: #ffffff;
+}
+
+.start-button-container {
+    margin-top: 30px;
+}
+
+.start-button {
+    background-color: #2196F3;
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.start-button:hover {
+    background-color: #1976D2;
+}

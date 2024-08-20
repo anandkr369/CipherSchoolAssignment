@@ -1,15 +1,11 @@
-
-import React from 'react'
+import React from 'react';
 import { Navigate } from 'react-router-dom';
-import {useSelector} from "react-redux";
+import { useSelector } from 'react-redux';
 
 const PrivateRoute = (props) => {
-    const state=useSelector((state)=>{return state.token});
+    const token = useSelector((state) => state.token);
 
-  return (
-    state!==""?
-    <props.component/>:<Navigate to='/'/>
-  )
-}
+    return token !== '' ? <props.component /> : <Navigate to="/" />;
+};
 
-export default PrivateRoute
+export default PrivateRoute;

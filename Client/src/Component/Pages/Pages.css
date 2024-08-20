@@ -1,93 +1,159 @@
-.nav{
-    width: 100%;
-    height: 3rem;
-    background-color: aqua;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0px 0.5px 1px black;
-    position: relative;
-}
-.image img{
-    width: 120px;
-}
-.menu{
-    width: 2.5rem;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    margin-right: 1.5rem;
-    cursor: pointer;
-}
-.menu span{
-    width: 100%;
-    height: 0.4rem;
-    background-color: white;
-    margin: 0.2rem;
-    border-radius: 0.5rem;
-
-}
-.menu-options{
-
-    width: fit-content;
-    position: absolute;
-    top: 3.1rem;
-    right:0.5rem;
-    background-color: cadetblue;
- 
-    border-radius: 0 0 10px 10px;
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
-    z-index: 1000;
-}
-.menu-options ul{
-    list-style: none;
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
-.open{
+
+.container {
+    margin-top: 5%;
+    padding: 20px;
+}
+
+h2 {
+    font-weight: bold;
+}
+
+/* Navbar Styles */
+.nav {
+    width: 100%;
+    height: 4rem;
+    background-color: #333;
     display: flex;
-}
-.webcam{
-    position: fixed;
-    bottom: 10px;
-    right: 1rem;
-    
-}
-
-
-
-.complete-message {
-    margin-top: 10%;
-    display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    animation: scaleUpDown 2s infinite;
+    padding: 0 1rem;
+    color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-
-@keyframes scaleUpDown {
-    0% {
-        transform: scale(0.5);
-    }
-    50% {
-        transform: scale(1);
-    }
-    100% {
-        transform: scale(0.5);
-    }
+.nav .image img {
+    width: 100px;
+    height: auto;
 }
 
-.form{
+.nav h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.menu {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.menu span {
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+    border-radius: 2px;
+}
+
+.menu-options {
+    position: absolute;
+    top: 4.5rem;
+    right: 1rem;
+    background-color: #444;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     display: none;
+    flex-direction: column;
+    color: white;
+    z-index: 1000;
 }
 
+.menu-options.open {
+    display: flex;
+}
 
-.options{
+.menu-options ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-options ul li {
+    margin-bottom: 10px;
+}
+
+.menu-options ul li p {
+    margin: 0;
+}
+
+.menu-options ul li button.logout {
+    background-color: #ff4c4c;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
     cursor: pointer;
 }
 
+.menu-options ul li button.logout:hover {
+    background-color: #ff1c1c;
+}
+
+/* Form Styles */
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-group p.text-danger {
+    color: #e74c3c;
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+button[type="submit"] {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: bold;
+}
+
+button[type="submit"]:hover {
+    background-color: #555;
+}
+
+.text-center {
+    text-align: center;
+}
+
+a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
