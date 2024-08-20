@@ -49,7 +49,7 @@ const Register = () => {
         setError({ email: emailerror, password: passworderror, name: nameerror, mobile: mobileerror });
 
         if (emailerror === '' && passworderror === '' && nameerror === '' && mobileerror === '') {
-            fetch('http://localhost:3000/register', {
+            fetch('https://cipherschoolassignment-0jto.onrender.com/register', {
                 method: 'POST',
                 body: JSON.stringify(data),
                 headers: {

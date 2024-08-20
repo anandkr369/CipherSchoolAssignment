@@ -33,7 +33,7 @@ const Login = () => {
         setError({ email: emailerror, password: passworderror });
 
         if (emailerror === '' && passworderror === '') {
-            fetch('http://localhost:3000/login', {
+            fetch('https://cipherschoolassignment-0jto.onrender.com/login', {
                 method: 'POST',
                 body: JSON.stringify(data),
                 headers: {
